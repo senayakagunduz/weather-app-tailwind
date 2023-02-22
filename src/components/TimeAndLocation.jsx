@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TimeAndLocation = ({ city, weatherData }) => {
+const TimeAndLocation = ({ weatherData }) => {
     const getToday = () => {
         var myDate = new Date();
         let daysList = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -25,13 +25,8 @@ const TimeAndLocation = ({ city, weatherData }) => {
         <div>
             <div className='flex items-center justify-center my-6'>
                 <p className='text-white text-xl font-extralight'>
-                {getToday()}  
-                </p>
-            </div>
-            <div className='flex items-center justify-center my-6'>
-                <p className='text-white text-xl font-normal'>
-               <span className='my-1'>{clock()}</span>  
-                </p>
+                {getToday()} | <span className='my-1 font-semibold'>{clock()}</span>  
+                </p>  
             </div>
             <div className="flex items-center justify-center my-3">
                 <p className='text-white text-3xl font-medium capitalize'>
@@ -41,5 +36,4 @@ const TimeAndLocation = ({ city, weatherData }) => {
         </div>
     )
 }
-
 export default TimeAndLocation

@@ -11,6 +11,7 @@ function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [city, setCity] = useState("");
   const [loading, setLoading] = useState(false);
+  const [list, setList] = useState([]);
 
   const getData=async()=>{
     try {
@@ -18,6 +19,7 @@ function App() {
       const data=await getWeatherData(city);
       setWeatherData(data);
       setLoading(false);
+      setFiveDays();
       console.log(data);
     } catch (error) {
       console.log(error.message);
@@ -26,6 +28,34 @@ function App() {
   useEffect(()=>{
     getData();   
   },[])
+
+  function getWeekDays(locale) {
+    var baseDate = new Date();
+    var weekDays = [];
+    for (let i = 0; i < 7; i++) {
+      weekDays.push(baseDate.toLocaleDateString(locale, { weekday: "long" }));
+      baseDate.setDate(baseDate.getDate() + 1);
+    }
+    return weekDays;
+  }
+
+  function setFiveDays(){
+    setList([]);
+    var weekDays = getWeekDays("en-US");
+  
+    for (let i = 1; i <= 6; i++) {
+      let obj = {};
+      obj.day = weekDays[i];
+      obj.minTemp = weatherData.list[i].main.temp_min;
+      obj.maxTemp = weatherData.list[i].main.temp_max;
+      obj.desc = weatherData.list[i].weather[0].main;
+      obj.icon = weatherData.list[i].weather[0].icon;
+  
+      setList((list) => [...list, obj]);
+    }
+    console.log("All list=>", list)
+  }
+ 
  
   return (
     <div className="App">
@@ -37,7 +67,8 @@ function App() {
           <>
           <TimeAndLocation city={city} weatherData={weatherData}/>
           <TempratureAndDetails weatherData={weatherData}/>
-          <Forecast weatherData={weatherData} />
+          <Forecast weatherData={weatherData} list={list}/>
+         
           </>
           ) :null
         }
